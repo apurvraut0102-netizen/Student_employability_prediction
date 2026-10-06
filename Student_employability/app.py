@@ -6,7 +6,7 @@ import pandas as pd
 import streamlit as st
 
 st.set_page_config(
-    page_title="Neha Lutade | Employability Predictor",
+    page_title="Neha Lutade & Nandini Naidu | Employability Predictor",
     page_icon="🎓",
     layout="wide",
     initial_sidebar_state="expanded"
@@ -46,7 +46,7 @@ st.markdown("""
 st.markdown("""
 <div class="hero">
     <h1>🎓 Student Employability Predictor</h1>
-    <p>Neha Lutade • Machine Learning Project</p>
+    <p>Neha Lutade & Nandini Naidu • Machine Learning Project</p>
 </div>
 """, unsafe_allow_html=True)
 
@@ -60,10 +60,17 @@ with st.sidebar:
     st.markdown("**Model:** Random Forest")
     st.markdown("**Output:** Employable / Needs Development")
     st.markdown("---")
-    st.caption("Developed by Neha Lutade")
+    st.caption("Developed by Neha Lutade & Nandini Naidu")
 
 st.markdown("### Enter student profile")
 st.caption("Use the controls below and click **Predict Employability**.")
+
+# Added Name and Surname fields side-by-side
+name_col1, name_col2 = st.columns(2)
+with name_col1:
+    first_name = st.text_input("Name", placeholder="Enter first name")
+with name_col2:
+    last_name = st.text_input("Surname", placeholder="Enter surname")
 
 left, right = st.columns(2)
 
@@ -103,14 +110,18 @@ if st.button("🔮 Predict Employability", type="primary", use_container_width=T
     probability = float(model.predict_proba(data)[0][1])
     prediction = int(model.predict(data)[0])
 
+    # Optional: Use the entered name in the result message if provided
+    student_name = f"{first_name} {last_name}".strip()
+    profile_text = f"The profile for **{student_name}**" if student_name else "The profile"
+
     if prediction == 1:
         label = "Highly Employable"
         emoji = "🚀"
-        message = "The profile shows strong employability indicators."
+        message = f"{profile_text} shows strong employability indicators."
     else:
         label = "Needs Development"
         emoji = "📚"
-        message = "Improving skills, experience and academic indicators could strengthen the profile."
+        message = f"Improving skills, experience and academic indicators could strengthen {profile_text.lower()}."
 
     st.markdown(f"""
     <div class="result">
@@ -133,6 +144,6 @@ if st.button("🔮 Predict Employability", type="primary", use_container_width=T
 
 st.markdown("---")
 st.markdown(
-    '<div style="text-align:center" class="small">Student Employability Prediction • Neha Lutade • College Project</div>',
+    '<div style="text-align:center" class="small">Student Employability Prediction • Neha Lutade & Nandini Naidu • College Project</div>',
     unsafe_allow_html=True
 )
